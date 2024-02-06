@@ -1,4 +1,4 @@
-server.port: 8089
+server.port: 8999
 
 debug: false
 management.endpoints.web.exposure.include: "*"
@@ -11,11 +11,17 @@ logging:
 
 spring:
   datasource:
+    ## Mysql을 데이터소스로 사용할 때
     url: jdbc:mysql://localhost:3306/board
     username: hj
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+    ## h2 인메모리 DB를 데이터소스로 사용할 때
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    driver-class-name: org.h2.Driver
   jpa:
+    open-in-view: false
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
     show-sql: true
@@ -24,9 +30,15 @@ spring:
         hibernate.default_batch_fetch_size: 100
     h2.console.enabled: true
     sql.init.mode: always
-    data.rest:
-      base-path: /api
-      detection-strategy: annotated
+    ##spring data rest설정
+  data.rest:
+    base-path: /api
+    detection-strategy: annotated
+  ##hal explorer 사용을 위해 스프링 시큐리티 CSRF를 잠시 Off함.
+  security:
+    csrf:
+      enabled: false
+  thymeleaf3.decoupled-logic: true
 
 ---
 
