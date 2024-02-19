@@ -2,7 +2,6 @@ package com.fastcampus.board.service;
 
 import com.fastcampus.board.domain.Article;
 import com.fastcampus.board.domain.ArticleComment;
-import com.fastcampus.board.domain.type.SearchType;
 import com.fastcampus.board.dto.ArticleDto;
 import com.fastcampus.board.dto.ArticleUpdateDto;
 import com.fastcampus.board.repository.ArticleCommentRepository;
@@ -41,6 +40,23 @@ class ArticleCommentServiceTest {
         given(articleRepository.findById(articleId)).willReturn(Optional.of(
                 Article.of("title","content","#java")
                 ));
+        //when
+        List<ArticleComment> articleComments = sut.searchArticleComments(articleId);
+
+        //then
+        assertThat(articleComments).isNotNull();
+        then(articleRepository).should().findById(articleId);
+
+    }
+
+    @DisplayName("댓글 정보를 입력하면, 댓글을 저장한다.")
+    @Test
+    void givenArticleComment_whenSearchingComments_thenReturnsArticleComments() {
+        //given
+        Long articleId = 1L;
+        given(articleRepository.findById(articleId)).willReturn(Optional.of(
+                Article.of("title","content","#java")
+        ));
         //when
         List<ArticleComment> articleComments = sut.searchArticleComments(articleId);
 
